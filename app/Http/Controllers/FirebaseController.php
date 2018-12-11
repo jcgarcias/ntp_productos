@@ -59,16 +59,16 @@ class FirebaseController extends Controller
             $serviceAccount = ServiceAccount::fromJsonFile(__DIR__.'/productos-4b3e7-firebase-adminsdk-gg41h-4045cb3f85.json');
             $firebase = (new Factory)
                 ->withServiceAccount($serviceAccount)
-                ->withDatabaseUri('https://productos-4b3e7.firebaseapp.com/')
+                ->withDatabaseUri('https://productos-4b3e7.firebaseio.com')
                 ->create();
 
             $database = $firebase-> getDatabase();
             $newPost = $database
-                ->getReference('categorias')
+                ->getReference('productos')
                 ->push([
                     'producto'  =>  $request->nombre,
-                    'cantidad'  =>  $request->cantidad,
-                    'precio'    =>  $request->precio,
+                    'cantidad'  =>  (double)$request->cantidad,
+                    'precio'    =>  (double)$request->precio,
                     'fecha'     =>  now(),
                 ]);
             return str_replace('https://productos-4b3e7.firebaseio.com/productos/','',$newPost);
